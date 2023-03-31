@@ -1,0 +1,24 @@
+
+sudo docker build --tag intelcomp_sdg -f ./dockerfile .
+
+sudo docker stop sdg_black_box_1
+sudo docker rm   sdg_black_box_1
+sudo docker container run -d -it --name sdg_black_box_1 -i intelcomp_sdg
+
+# sudo docker stop sdg_black_box_2
+# sudo docker rm   sdg_black_box_2
+# sudo docker container run -d -it --name sdg_black_box_2 -i intelcomp_sdg
+
+sudo docker exec -it sdg_black_box_1 /bin/bash
+
+sudo docker container ls --all
+
+sudo docker logs sdg_black_box_1
+
+sudo docker ps -a
+
+sudo docker cp sdg_black_box_1:app/resources/data/test_output.txt ./
+
+# docker cp abc123:/path/to/file /host/destination/folder
+
+
