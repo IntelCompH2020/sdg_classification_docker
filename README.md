@@ -38,6 +38,15 @@ and Collect the output of the classifier
 
 ## Run image container in production
 
+You have to mount the input directory and the output directory
+
+```
+-v input_directory:directory_inside_docker"
+-v output_directory:directory_outside_docker"
+``` 
+
+Example:
+
  ```
  docker run \
 -v /home/dpappas/input_data:/input_files \
