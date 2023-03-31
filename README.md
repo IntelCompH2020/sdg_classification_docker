@@ -30,7 +30,7 @@ docker container ls --all
 ``` 
 
 
-## Collect the output of the classifier
+## Collect the output of the classifier``
  
  ```
  docker cp sdg_black_box_1:app/resources/data/test_output.txt ./
