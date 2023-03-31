@@ -1,4 +1,5 @@
 
+# FROM python:3.6-slim-buster
 FROM ubuntu:18.04
 
 RUN apt-get update && apt-get install -y software-properties-common && add-apt-repository ppa:deadsnakes/ppa && \
@@ -11,6 +12,9 @@ RUN pip install torch==1.6.0+cpu -f https://download.pytorch.org/whl/torch_stabl
 ENV LANG=en_US.UTF-8 \
   LANGUAGE=en_US:en \
   LC_ALL=en_US.UTF-8
+
+RUN mkdir /input_files/
+RUN mkdir /output_files/
 
 WORKDIR /app
 COPY . /app
