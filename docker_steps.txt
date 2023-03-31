@@ -21,4 +21,5 @@ sudo docker cp sdg_black_box_1:app/resources/data/test_output.txt ./
 
 # docker cp abc123:/path/to/file /host/destination/folder
 
+sudo docker run batch_classifier.py --delimeter=|~| --data_path=resources/data/test_input.txt --out_path=resources/data/test_output.txt
 
