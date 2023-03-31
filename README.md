@@ -22,3 +22,18 @@ Then we run an image container
 ```
 docker container run -d -it --name sdg_black_box_1 -i intelcomp_sdg
 ```
+
+Check whether the container is running
+
+```
+docker container ls --all
+``` 
+
+
+## Collect the output of the classifier
+ 
+ ```
+ docker cp sdg_black_box_1:app/resources/data/test_output.txt ./
+```
+ 
+
