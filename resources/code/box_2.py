@@ -14,7 +14,7 @@ bioclean_mod    = lambda t: re.sub(
 
 class KT_matcher:
     def __init__(
-        self, kt_fpath = '/home/dpappas/sdg_vocabulary_dec_22.xlsx'
+        self, kt_fpath = '/home/dpappas/sdg_vocabulary.xlsx'
     ):
         self.stemmer                = PorterStemmer()
         self.kt_fpath               = kt_fpath
@@ -241,7 +241,7 @@ if __name__ == '__main__':
     '''.strip()
     ]
     ######################################################################################################
-    k1      = KT_matcher(kt_fpath = './sdg_vocabulary_dec_22.xlsx')
+    k1      = KT_matcher(kt_fpath = './sdg_vocabulary.xlsx')
     res     = k1.emit_for_abstracts(abstracts)
     print(40*'=')
     for abs, sdg_cats in res:

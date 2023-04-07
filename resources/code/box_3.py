@@ -152,7 +152,7 @@ if __name__ == '__main__':
     ]
     ######################################################################################################
     k3      = MyGuidedLDA(
-        kt_fpath            = '/home/dpappas/sdg_vocabulary_dec_22.xlsx',
+        kt_fpath            = '/home/dpappas/sdg_vocabulary.xlsx',
         guided_tm_path      = '/home/dpappas/guidedlda_model.pickle',
         guided_tm_cv_path   = '/home/dpappas/guidedlda_countVectorizer.pickle'
     )

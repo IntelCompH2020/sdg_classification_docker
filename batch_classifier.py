@@ -59,11 +59,11 @@ k1_3 = K1_model(
 )
 
 print('loading box 2')
-kt_match    = KT_matcher(kt_fpath = './resources/data/sdg_vocabulary_dec_22.xlsx')
+kt_match    = KT_matcher(kt_fpath = './resources/data/sdg_vocabulary.xlsx')
 
 print('loading box 3')
 glda        = MyGuidedLDA(
-    kt_fpath            = './resources/data/sdg_vocabulary_dec_22.xlsx',
+    kt_fpath            = './resources/data/sdg_vocabulary.xlsx',
     guided_tm_path      = './resources/models/guidedlda_model.pickle',
     guided_tm_cv_path   = './resources/models/guidedlda_countVectorizer.pickle'
 )
