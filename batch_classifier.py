@@ -89,6 +89,7 @@ def do_for_one_batch(batch_dois, batch_texts, all_file_results):
     for i in range(len(batch_dois)):
         bdoi                = batch_dois[i]
         bkt_sdg_res         = kt_sdg_res[i][1]
+        bkt_sdg_res_counter = Counter([t[0] for t in bkt_sdg_res])
         bguided_sdg_res     = guided_sdg_res[i][1]
         br1                 = r1[i][1]
         br2                 = r2[i][1]
@@ -96,7 +97,8 @@ def do_for_one_batch(batch_dois, batch_texts, all_file_results):
         bbert_results       = bert_results[i][1]
         bbert_results_att   = bert_results_att[i][1]
         final_sdg_categories = []
-        final_sdg_categories += list(Counter([t[0] for t in bkt_sdg_res]).keys())
+        final_sdg_categories += list(bkt_sdg_res_counter.keys())
+        final_sdg_categories += list([k for k in bkt_sdg_res_counter if bkt_sdg_res_counter[k]>=3])
         final_sdg_categories += [k for k, v in bguided_sdg_res.items() if v > guided_thres]
         final_sdg_categories += [k for k, v in br1.items() if v >= BERT_thres]
         final_sdg_categories += [k for k, v in br2.items() if v >= BERT_thres]
