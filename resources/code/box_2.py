@@ -110,6 +110,7 @@ class KT_matcher:
         return ' '.join([self.stemmer.stem(tok) for tok in phrase.lower().strip().split()])
     def check_text(self, full_text):
         sdgs            = []
+        full_text       = full_text.replace('â€™',"'").replace('â€™',"'").replace('â€',"").replace('â€œ',"")
         full_text       = ' ' + bioclean_mod(full_text.lower().replace('\n',' ')) + ' '
         full_text       = re.sub('\s+', ' ', full_text)
         no_plur_text    = self.stem_phrase(full_text)
