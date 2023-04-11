@@ -113,7 +113,7 @@ class KT_matcher:
         full_text       = full_text.replace('â€™',"'").replace('â€™',"'").replace('â€',"").replace('â€œ',"")
         full_text       = ' ' + bioclean_mod(full_text.lower().replace('\n',' ')) + ' '
         full_text       = re.sub('\s+', ' ', full_text)
-        no_plur_text    = self.stem_phrase(full_text)
+        no_plur_text    = ' {} '.format(self.stem_phrase(full_text))
         for sdg, kts in self.sdg_voc_dpappas.items():
             for kt in kts:
                 if (type(kt) == str):
