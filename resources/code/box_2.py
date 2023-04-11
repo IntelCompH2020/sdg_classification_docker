@@ -6,7 +6,7 @@ from tqdm import tqdm
 from nltk.stem.porter import PorterStemmer
 
 bioclean_mod    = lambda t: re.sub(
-    '[~`@#$-=<>/.,?;*!%^&_+():-\[\]{}]',
+    '[~`@#$\-=<>/.,?;*!%^&_+():\[\]{}]',
     '',
     t.replace('"', '').replace('/', '').replace('\\', '').replace("'", '').replace("-", ' ').strip()
 )
