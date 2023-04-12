@@ -26,7 +26,7 @@ class KT_matcher:
         self.sdg_voc_dpappas    = self.prepare_sdg_voc(self.kt_fpath)
     def prepare_sdg_voc(self,kt_fpath):
         ################################################
-        sdg_names = {
+        sdg_names   = {
             'SDG 1': '1. No poverty',
             'SDG 2': '2. Zero hunger',
             'SDG 3': '3. Good health',
@@ -45,7 +45,7 @@ class KT_matcher:
             'SDG 16': '16. Peace & justice',
             'SDG 17': '17. Partnership'
         }
-        wb = load_workbook(filename=kt_fpath)
+        wb          = load_workbook(filename=kt_fpath)
         xl_data = {}
         for sheet_name in wb.get_sheet_names():
             temp_data = []
@@ -55,7 +55,7 @@ class KT_matcher:
                     temp_data.append([item.value.strip() if item.value else None for item in row])
                 xl_data[sheet_name] = temp_data
         ################################################
-        sdg_voc = {}
+        sdg_voc     = {}
         for k in xl_data:
             sdg_name = sdg_names[k]
             sdg_voc[sdg_name] = set()
@@ -73,6 +73,7 @@ class KT_matcher:
                     # it is one phrase
                     basic_kt = self.stem_phrase(bioclean_mod(basic_kt.lower()))
                     sdg_voc[sdg_name].add(basic_kt)
+            print((sdg_name, len(sdg_voc[sdg_name])))
         ################################################
         return sdg_voc
     def prep_phrases_to_find(self):
