@@ -117,7 +117,7 @@ if __name__ == '__main__':
     batch_texts = []
     all_file_results = {}
     ################################################################################
-    with open(data_path) as fp:
+    with open(data_path, 'r', encoding='utf-8') as fp:
         lines = [line.strip() for line in fp.readlines() if len(line.strip())]
         fp.close()
     ################################################################################
