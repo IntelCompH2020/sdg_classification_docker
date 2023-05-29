@@ -15,7 +15,7 @@ bioclean_mod    = lambda t: re.sub(
 class KT_matcher:
     def __init__(
         self,
-        kt_fpath = '/home/dpappas/sdg_vocabulary_dec_22.xlsx',
+        kt_fpath = './data/sdg_vocabulary.xlsx',
         parallel_jobs = 20
     ):
         self.stemmer                = PorterStemmer()
@@ -259,7 +259,7 @@ if __name__ == '__main__':
     '''.strip(),
     ]
     ######################################################################################################
-    k1      = KT_matcher(kt_fpath = './models/sdg_vocabulary.xlsx')
+    k1      = KT_matcher(kt_fpath = './datadg_vocabulary.xlsx')
     start_time = time.perf_counter()
     res     = k1.emit_for_abstracts(abstracts)
     print(40*'=')

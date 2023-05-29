@@ -10,9 +10,9 @@ import numpy as np
 class MyGuidedLDA:
     def __init__(
         self,
-        kt_fpath = '/home/dpappas/MODIFIED BY DPAPPAS sdg_vocabulary_V.1.3 (zenodo).xlsx',
-        guided_tm_path = '/home/dpappas/guidedlda_model.pickle',
-        guided_tm_cv_path = '/home/dpappas/guidedlda_countVectorizer.pickle'
+        kt_fpath            = './data/sdg_vocabulary.xlsx',
+        guided_tm_path      = './models/guidedlda_model.pickle',
+        guided_tm_cv_path   = './models/guidedlda_countVectorizer.pickle'
     ):
         self.guided_tm_path     = guided_tm_path
         self.guided_tm_cv_path  = guided_tm_cv_path
@@ -152,9 +152,9 @@ if __name__ == '__main__':
     ]
     ######################################################################################################
     k3      = MyGuidedLDA(
-        kt_fpath            = '/home/dpappas/sdg_vocabulary.xlsx',
-        guided_tm_path      = '/home/dpappas/guidedlda_model.pickle',
-        guided_tm_cv_path   = '/home/dpappas/guidedlda_countVectorizer.pickle'
+        kt_fpath            = './data/sdg_vocabulary.xlsx',
+        guided_tm_path      = './models/guidedlda_model.pickle',
+        guided_tm_cv_path   = './models/guidedlda_countVectorizer.pickle'
     )
     res     = k3.emit_for_abstracts(abstracts)
     print(40*'=')
@@ -163,8 +163,3 @@ if __name__ == '__main__':
         pprint(sdg_cats)
         print(40*'-')
     ######################################################################################################
-
-
-
-
-
