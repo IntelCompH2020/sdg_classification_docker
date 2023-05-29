@@ -1,6 +1,7 @@
 
+from joblib import Parallel, delayed
 from openpyxl import load_workbook
-import re
+import re, time
 from pprint import pprint
 from tqdm import tqdm
 from nltk.stem.porter import PorterStemmer
@@ -13,18 +14,21 @@ bioclean_mod    = lambda t: re.sub(
 
 class KT_matcher:
     def __init__(
-        self, kt_fpath = '/home/dpappas/sdg_vocabulary.xlsx'
+        self,
+        kt_fpath = '/home/dpappas/sdg_vocabulary_dec_22.xlsx',
+        parallel_jobs = 20
     ):
         self.stemmer                = PorterStemmer()
         self.kt_fpath               = kt_fpath
         self.lenient_context_size   = 60
         self.sdg_voc_dpappas        = self.prepare_sdg_voc(kt_fpath)
+        self.parallel_jobs          = parallel_jobs
         # self.prep_phrases_to_find()
     def reload_lenient_context_size(self, num):
         self.lenient_context_size   = num
     def reload_vocab(self):
         self.sdg_voc_dpappas    = self.prepare_sdg_voc(self.kt_fpath)
-    def prepare_sdg_voc(self,kt_fpath):
+    def prepare_sdg_voc(self, kt_fpath):
         ################################################
         sdg_names   = {
             'SDG 1': '1. No poverty',
@@ -66,9 +70,10 @@ class KT_matcher:
                 if (needed_kts):
                     # there are two phrases
                     for t in needed_kts.split('|'):
-                        basic_kt    = self.stem_phrase(bioclean_mod(basic_kt.lower()))
-                        t           = self.stem_phrase(bioclean_mod(t.lower()))
-                        sdg_voc[sdg_name].add((basic_kt, t))
+                        if len(t.strip()):
+                            basic_kt    = self.stem_phrase(bioclean_mod(basic_kt.lower()))
+                            t           = self.stem_phrase(bioclean_mod(t.lower()))
+                            sdg_voc[sdg_name].add((basic_kt, t))
                 else:
                     # it is one phrase
                     basic_kt = self.stem_phrase(bioclean_mod(basic_kt.lower()))
@@ -109,21 +114,31 @@ class KT_matcher:
         print('total phrases: {}'.format(len(self.phrases_to_find)))
     def stem_phrase(self, phrase):
         return ' '.join([self.stemmer.stem(tok) for tok in phrase.lower().strip().split()])
-    def check_text(self, full_text):
+    def check_text(self, original_text):
         sdgs            = []
-        full_text       = full_text.replace('â€™',"'").replace('â€™',"'").replace('â€',"").replace('â€œ',"")
+        full_text       = original_text.replace('â€™',"'").replace('â€™',"'").replace('â€',"").replace('â€œ',"")
         full_text       = ' ' + bioclean_mod(full_text.lower().replace('\n',' ')) + ' '
         full_text       = re.sub('\s+', ' ', full_text)
         no_plur_text    = ' {} '.format(self.stem_phrase(full_text))
+        set_toks        = set(no_plur_text.split())
         for sdg, kts in self.sdg_voc_dpappas.items():
             for kt in kts:
                 if (type(kt) == str):
+                    #############################################################################################
+                    if kt.split()[0] not in set_toks:
+                        continue
+                    #############################################################################################
                     kt = ' '+kt+ ' '
                     #############################################################################################
                     if kt in no_plur_text:
                         le_count = no_plur_text.count(kt)
                         sdgs.append((sdg, kt, le_count))
                 else:
+                    #############################################################################################
+                    if kt[0].split()[0] not in set_toks:
+                        continue
+                    if kt[1].split()[0] not in set_toks:
+                        continue
                     #############################################################################################
                     phrases_to_find = []
                     phrases_to_find.append(' {} {} '.format(kt[0], kt[1]))
@@ -139,7 +154,7 @@ class KT_matcher:
                             lenient_text    = ' {} '.format(no_plur_text[i:i + tttt])
                             if (' {} '.format(kt[0]) in lenient_text and ' {} '.format(kt[1]) in lenient_text):
                                 sdgs.append((sdg, tuple(kt), -1))
-        return list(set(sdgs))
+        return original_text, list(set(sdgs))
     def check_text_2(self, full_text):
         sdgs = []
         full_text = ' ' + bioclean_mod(full_text.lower().replace('\n',' ')) + ' '
@@ -210,11 +225,13 @@ class KT_matcher:
                     #     sdgs.append((sdg, tuple(kt), False))  # false means i found both just somewhere in the text
         return list(set(sdgs))
     def emit_for_abstracts(self, abstracts):
-        ret = []
-        for abs in abstracts:
-            kt_sdg_res = self.check_text(abs)
-            ret.append((abs, kt_sdg_res))
-        return ret
+        # ret = []
+        # for abs in abstracts:
+        #     kt_sdg_res = self.check_text(abs)
+        #     ret.append((abs, kt_sdg_res))
+        # # results = Parallel(n_jobs=5)(delayed(process)(i) for i in range(10))
+        results = Parallel(n_jobs=self.parallel_jobs)(delayed(self.check_text)(abs) for abs in abstracts)
+        return results
 
 if __name__ == '__main__':
     abstracts = [
@@ -239,16 +256,18 @@ if __name__ == '__main__':
     Background: Ebola virus disease (EVD) is a highly lethal condition for which no specific treatment has proven efficacy. In September 2014, while the Ebola outbreak was at its peak, the World Health Organization released a short list of drugs suitable for EVD research. Favipiravir, an antiviral developed for the treatment of severe influenza, was one of these. In late 2014, the conditions for starting a randomized Ebola trial were not fulfilled for two reasons. One was the perception that, given the high number of patients presenting simultaneously and the very high mortality rate of the disease, it was ethically unacceptable to allocate patients from within the same family or village to receive or not receive an experimental drug, using a randomization process impossible to understand by very sick patients. The other was that, in the context of rumors and distrust of Ebola treatment centers, using a randomized design at the outset might lead even more patients to refuse to seek care. Therefore, we chose to conduct a multicenter non-randomized trial, in which all patients would receive favipiravir along with standardized care. The objectives of the trial were to test the feasibility and acceptability of an emergency trial in the context of a large Ebola outbreak, and to collect data on the safety and effectiveness of favipiravir in reducing mortality and viral load in patients with EVD. The trial was not aimed at directly informing future guidelines on Ebola treatment but at quickly gathering standardized preliminary data to optimize the design of future studies.
     Methods and findings: Inclusion criteria were positive Ebola virus reverse transcription PCR (RT-PCR) test, age ≥ 1 y, weight ≥ 10 kg, ability to take oral drugs, and informed consent. All participants received oral favipiravir (day 0: 6,000 mg; day 1 to day 9: 2,400 mg/d). Semi-quantitative Ebola virus RT-PCR (results expressed in "cycle threshold" [Ct]) and biochemistry tests were performed at day 0, day 2, day 4, end of symptoms, day 14, and day 30. Frozen samples were shipped to a reference biosafety level 4 laboratory for RNA viral load measurement using a quantitative reference technique (genome copies/milliliter). Outcomes were mortality, viral load evolution, and adverse events. The analysis was stratified by age and Ct value. A "target value" of mortality was defined a priori for each stratum, to guide the interpretation of interim and final analysis. Between 17 December 2014 and 8 April 2015, 126 patients were included, of whom 111 were analyzed (adults and adolescents, ≥13 y, n = 99; young children, ≤6 y, n = 12). Here we present the results obtained in the 99 adults and adolescents. Of these, 55 had a baseline Ct value ≥ 20 (Group A Ct ≥ 20), and 44 had a baseline Ct value < 20 (Group A Ct < 20). Ct values and RNA viral loads were well correlated, with Ct = 20 corresponding to RNA viral load = 7.7 log10 genome copies/ml. Mortality was 20% (95% CI 11.6%-32.4%) in Group A Ct ≥ 20 and 91% (95% CI 78.8%-91.1%) in Group A Ct < 20. Both mortality 95% CIs included the predefined target value (30% and 85%, respectively). Baseline serum creatinine was ≥110 μmol/l in 48% of patients in Group A Ct ≥ 20 (≥300 μmol/l in 14%) and in 90% of patients in Group A Ct < 20 (≥300 μmol/l in 44%). In Group A Ct ≥ 20, 17% of patients with baseline creatinine ≥110 μmol/l died, versus 97% in Group A Ct < 20. In patients who survived, the mean decrease in viral load was 0.33 log10 copies/ml per day of follow-up. RNA viral load values and mortality were not significantly different between adults starting favipiravir within <72 h of symptoms compared to others. Favipiravir was well tolerated.
     Conclusions: In the context of an outbreak at its peak, with crowded care centers, randomizing patients to receive either standard care or standard care plus an experimental drug was not felt to be appropriate. We did a non-randomized trial. This trial reaches nuanced conclusions. On the one hand, we do not conclude on the efficacy of the drug, and our conclusions on tolerance, although encouraging, are not as firm as they could have been if we had used randomization. On the other hand, we learned about how to quickly set up and run an Ebola trial, in close relationship with the community and non-governmental organizations; we integrated research into care so that it improved care; and we generated knowledge on EVD that is useful to further research. Our data illustrate the frequency of renal dysfunction and the powerful prognostic value of low Ct values. They suggest that drug trials in EVD should systematically stratify analyses by baseline Ct value, as a surrogate of viral load. They also suggest that favipiravir monotherapy merits further study in patients with medium to high viremia, but not in those with very high viremia.
-    '''.strip()
+    '''.strip(),
     ]
     ######################################################################################################
-    k1      = KT_matcher(kt_fpath = './sdg_vocabulary.xlsx')
+    k1      = KT_matcher(kt_fpath = './models/sdg_vocabulary.xlsx')
+    start_time = time.perf_counter()
     res     = k1.emit_for_abstracts(abstracts)
     print(40*'=')
     for abs, sdg_cats in res:
         print(abs)
         pprint(sdg_cats)
         print(40*'-')
+    print("Elapsed time 1: ", time.perf_counter() - start_time)
     ######################################################################################################
 
 
