@@ -42,30 +42,30 @@ ensemble_agreement  = args.ensemble_agreement
 
 ################################################################################################################
 
-distilbert_vectorizer   = Vectorizer(model_name="distilbert-base-uncased")
-bert_vectorizer         = Vectorizer(model_name='bert-base-uncased')
+distilbert_vectorizer   = Vectorizer(model_name="./resources/models/distilbert-base-uncased")
+bert_vectorizer         = Vectorizer(model_name='./resources/models/bert-base-uncased')
 
 ################################################################################################################
 
 print('loading box 1')
-k1_1 = K1_model(hidden=100, resume_from='./models/distilbert-base-uncased_100_5e-05_29_84_85.pth.tar')
-k1_2 = K1_model(hidden=50,  resume_from='./models/distilbert-base-uncased_50_5e-05_23_83_84.pth.tar')
-k1_3 = K1_model(hidden=100, resume_from='./models/bert-base-uncased_100_5e-05_16_84_84.pth.tar')
+k1_1 = K1_model(hidden=100, resume_from='./resources/models/distilbert-base-uncased_100_5e-05_29_84_85.pth.tar')
+k1_2 = K1_model(hidden=50,  resume_from='./resources/models/distilbert-base-uncased_50_5e-05_23_83_84.pth.tar')
+k1_3 = K1_model(hidden=100, resume_from='./resources/models/bert-base-uncased_100_5e-05_16_84_84.pth.tar')
 
 print('loading box 2')
-kt_match    = KT_matcher(kt_fpath = './models/sdg_vocabulary.xlsx', parallel_jobs = parallel_jobs)
+kt_match    = KT_matcher(kt_fpath = './resources/models/sdg_vocabulary.xlsx', parallel_jobs = parallel_jobs)
 
 print('loading box 3')
 glda        = MyGuidedLDA(
-    kt_fpath            = './models/sdg_vocabulary.xlsx',
-    guided_tm_path      = './models/guidedlda_model.pickle',
-    guided_tm_cv_path   = './models/guidedlda_countVectorizer.pickle'
+    kt_fpath            = './resources/models/sdg_vocabulary.xlsx',
+    guided_tm_path      = './resources/models/guidedlda_model.pickle',
+    guided_tm_cv_path   = './resources/models/guidedlda_countVectorizer.pickle'
 )
 
 print('loading box 4')
 k4 = K4_model(
-    resume_from_1       ='./models/distilbert-base-uncased_3_87_88.pth.tar',
-    resume_from_2       ='./models/distilbert-base-uncased_4_78_80.pth.tar'
+    resume_from_1       ='./resources/models/distilbert-base-uncased_3_87_88.pth.tar',
+    resume_from_2       ='./resources/models/distilbert-base-uncased_4_78_80.pth.tar'
 )
 
 ################################################################################################################
