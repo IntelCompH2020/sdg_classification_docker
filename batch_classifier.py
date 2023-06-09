@@ -43,8 +43,8 @@ ensemble_agreement  = args.ensemble_agreement
 
 ################################################################################################################
 
-distilbert_vectorizer   = Vectorizer(model_name="/app/resources/models/distilbert-base-uncased")
-bert_vectorizer         = Vectorizer(model_name='/app/resources/models/bert-base-uncased')
+distilbert_vectorizer   = Vectorizer(model_name="distilbert-base-uncased")
+bert_vectorizer         = Vectorizer(model_name='bert-base-uncased')
 
 ################################################################################################################
 
