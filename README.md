@@ -27,7 +27,7 @@ Check whether the container is running
 
 ```
 sudo docker container ls --all
-sudo docker logs sdg sdg_black_box_1
+sudo docker logs sdg_black_box_1
 ``` 
 
 and Collect the output of the classifier
