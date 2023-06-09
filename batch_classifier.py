@@ -54,11 +54,11 @@ k1_2 = K1_model(hidden=50,  resume_from='/app/resources/models/distilbert-base-u
 k1_3 = K1_model(hidden=100, resume_from='/app/resources/models/bert-base-uncased_100_5e-05_16_84_84.pth.tar')
 
 print('loading box 2')
-kt_match    = KT_matcher(kt_fpath = '/app/resources/models/sdg_vocabulary.xlsx', parallel_jobs = parallel_jobs)
+kt_match    = KT_matcher(kt_fpath = '/app/resources/data/sdg_vocabulary.xlsx', parallel_jobs = parallel_jobs)
 
 print('loading box 3')
 glda        = MyGuidedLDA(
-    kt_fpath            = '/app/resources/models/sdg_vocabulary.xlsx',
+    kt_fpath            = '/app/resources/data/sdg_vocabulary.xlsx',
     guided_tm_path      = '/app/resources/models/guidedlda_model.pickle',
     guided_tm_cv_path   = '/app/resources/models/guidedlda_countVectorizer.pickle'
 )
