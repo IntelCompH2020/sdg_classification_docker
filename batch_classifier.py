@@ -13,20 +13,18 @@ logging.basicConfig(filename='sdg_api.log', level=logging.INFO, format="%(asctim
 
 ################################################################################################################
 
-parser  = argparse.ArgumentParser()
+parser = argparse.ArgumentParser()
 parser.add_argument("--data_path",          type=str,   default="./data.txt",   help="doi|~|text",              required=False)
-parser.add_argument("--delimeter",          type=str,   default="|~|",          help="doi|~|text",              required=False)
 parser.add_argument("--out_path",           type=str,   default="./sdg_out.p",  help="{doi:Counter()}",         required=False)
+parser.add_argument("--delimeter",          type=str,   default="|~|",          help="doi|~|text",              required=False)
 parser.add_argument("--log_path",           type=str,   default='sdg_batch_models.log',  help="The path for the log file.", required=False)
 parser.add_argument("--guided_thres",       type=float, default=0.4,            help="",                        required=False)
 parser.add_argument("--batch_size",         type=int,   default=100,            help="",                        required=False)
 parser.add_argument("--BERT_thres",         type=float, default=0.7,            help="",                        required=False)
 parser.add_argument("--BERT_thres_old",     type=float, default=0.95,           help="",                        required=False)
 parser.add_argument("--BERT_ATT_thres_old", type=float, default=0.98,           help="",                        required=False)
-parser.add_argument("--BERTOPIC_score_thres",   type=float, default=0.14,       help="",                        required=False)
-parser.add_argument("--BERTOPIC_count_thres",   type=int,   default=1,          help="",                        required=False)
-parser.add_argument("--ensemble_agreement", type=int,   default=3,              help="",                        required=False)
-args    = parser.parse_args()
+parser.add_argument("--KT_parallel_jobs",   type=int,   default=10,             help="",                        required=False)
+args                = parser.parse_args()
 logging.basicConfig(filename=args.log_path, level=logging.INFO, format="%(asctime)s;%(levelname)s;%(message)s")
 
 ################################################################################################################
