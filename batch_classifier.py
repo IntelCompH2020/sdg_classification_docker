@@ -1,11 +1,10 @@
 
-import argparse, pickle, time
-from pprint import pprint
-from resources.code.the_vectorizer import Vectorizer
-from resources.code.box_1 import K1_model
-from resources.code.box_2 import KT_matcher
-from resources.code.box_3 import MyGuidedLDA
-from resources.code.box_4 import K4_model
+import argparse, time
+from the_vectorizer import Vectorizer
+from box_1 import K1_model
+from box_2 import KT_matcher
+from box_3 import MyGuidedLDA
+from box_4 import K4_model
 from tqdm import tqdm
 from collections import Counter
 
