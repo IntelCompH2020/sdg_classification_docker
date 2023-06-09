@@ -14,8 +14,8 @@ logging.basicConfig(filename='sdg_api.log', level=logging.INFO, format="%(asctim
 ################################################################################################################
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--data_path",          type=str,   default="./data.txt",   help="doi|~|text",              required=False)
-parser.add_argument("--out_path",           type=str,   default="./sdg_out.p",  help="{doi:Counter()}",         required=False)
+parser.add_argument("--data_path",          type=str,   default="data.txt",   help="doi|~|text",              required=False)
+parser.add_argument("--out_path",           type=str,   default="sdg_out.p",  help="{doi:Counter()}",         required=False)
 parser.add_argument("--delimeter",          type=str,   default="|~|",          help="doi|~|text",              required=False)
 parser.add_argument("--log_path",           type=str,   default='sdg_batch_models.log',  help="The path for the log file.", required=False)
 parser.add_argument("--guided_thres",       type=float, default=0.4,            help="",                        required=False)
@@ -43,30 +43,30 @@ ensemble_agreement  = args.ensemble_agreement
 
 ################################################################################################################
 
-distilbert_vectorizer   = Vectorizer(model_name="./resources/models/distilbert-base-uncased")
-bert_vectorizer         = Vectorizer(model_name='./resources/models/bert-base-uncased')
+distilbert_vectorizer   = Vectorizer(model_name="/app/resources/models/distilbert-base-uncased")
+bert_vectorizer         = Vectorizer(model_name='/app/resources/models/bert-base-uncased')
 
 ################################################################################################################
 
 print('loading box 1')
-k1_1 = K1_model(hidden=100, resume_from='./resources/models/distilbert-base-uncased_100_5e-05_29_84_85.pth.tar')
-k1_2 = K1_model(hidden=50,  resume_from='./resources/models/distilbert-base-uncased_50_5e-05_23_83_84.pth.tar')
-k1_3 = K1_model(hidden=100, resume_from='./resources/models/bert-base-uncased_100_5e-05_16_84_84.pth.tar')
+k1_1 = K1_model(hidden=100, resume_from='/app/resources/models/distilbert-base-uncased_100_5e-05_29_84_85.pth.tar')
+k1_2 = K1_model(hidden=50,  resume_from='/app/resources/models/distilbert-base-uncased_50_5e-05_23_83_84.pth.tar')
+k1_3 = K1_model(hidden=100, resume_from='/app/resources/models/bert-base-uncased_100_5e-05_16_84_84.pth.tar')
 
 print('loading box 2')
-kt_match    = KT_matcher(kt_fpath = './resources/models/sdg_vocabulary.xlsx', parallel_jobs = parallel_jobs)
+kt_match    = KT_matcher(kt_fpath = '/app/resources/models/sdg_vocabulary.xlsx', parallel_jobs = parallel_jobs)
 
 print('loading box 3')
 glda        = MyGuidedLDA(
-    kt_fpath            = './resources/models/sdg_vocabulary.xlsx',
-    guided_tm_path      = './resources/models/guidedlda_model.pickle',
-    guided_tm_cv_path   = './resources/models/guidedlda_countVectorizer.pickle'
+    kt_fpath            = '/app/resources/models/sdg_vocabulary.xlsx',
+    guided_tm_path      = '/app/resources/models/guidedlda_model.pickle',
+    guided_tm_cv_path   = '/app/resources/models/guidedlda_countVectorizer.pickle'
 )
 
 print('loading box 4')
 k4 = K4_model(
-    resume_from_1       ='./resources/models/distilbert-base-uncased_3_87_88.pth.tar',
-    resume_from_2       ='./resources/models/distilbert-base-uncased_4_78_80.pth.tar'
+    resume_from_1       ='/app/resources/models/distilbert-base-uncased_3_87_88.pth.tar',
+    resume_from_2       ='/app/resources/models/distilbert-base-uncased_4_78_80.pth.tar'
 )
 
 ################################################################################################################
