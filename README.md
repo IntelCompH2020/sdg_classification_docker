@@ -5,7 +5,7 @@ This tool developed by Athena Reaserch Center classifies scientific literature i
 ## Create Docker image
 
 ```
-docker build --tag intelcomp_sdg -f ./dockerfile .
+sudo docker build --tag intelcomp_sdg -f ./dockerfile .
 ```
 
 ## Run image container as a demo
@@ -13,26 +13,27 @@ docker build --tag intelcomp_sdg -f ./dockerfile .
 If there is already a container running remove it
 
 ```
-docker stop sdg_black_box_1
-docker rm   sdg_black_box_1
+sudo docker stop sdg_black_box_1
+sudo docker rm   sdg_black_box_1
 ``` 
 
 Then we run an image container 
 
 ```
-docker container run -d -it --name sdg_black_box_1 -i intelcomp_sdg
+sudo docker container run -d -it --name sdg_black_box_1 -i intelcomp_sdg
 ```
 
 Check whether the container is running
 
 ```
-docker container ls --all
+sudo docker container ls --all
+sudo docker logs sdg sdg_black_box
 ``` 
 
 and Collect the output of the classifier
  
  ```
- docker cp sdg_black_box_1:app/resources/data/test_output.txt ./
+ sudo docker cp sdg_black_box_1:app/resources/data/test_output.txt ./
 ```
  
 
@@ -48,7 +49,7 @@ You have to mount the input directory and the output directory
 Example:
 
  ```
- docker run \
+sudo docker run \
 -v /home/dpappas/input_data:/input_files \
 -v /home/dpappas/output_data:/output_files \
 -i intelcomp_sdg \
