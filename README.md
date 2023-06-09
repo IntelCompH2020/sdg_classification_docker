@@ -53,6 +53,7 @@ sudo docker run \
 -v /home/dpappas/input_data:/input_files \
 -v /home/dpappas/output_data:/output_files \
 -i intelcomp_sdg \
+TOKENIZERS_PARALLELISM=true \
 batch_classifier.py \
 --data_path=/input_files/test_input.txt \
 --out_path=/output_files/test_output.txt
