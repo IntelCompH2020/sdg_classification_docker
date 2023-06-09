@@ -24,6 +24,7 @@ parser.add_argument("--BERT_thres",         type=float, default=0.7,            
 parser.add_argument("--BERT_thres_old",     type=float, default=0.95,           help="",                        required=False)
 parser.add_argument("--BERT_ATT_thres_old", type=float, default=0.98,           help="",                        required=False)
 parser.add_argument("--KT_parallel_jobs",   type=int,   default=10,             help="",                        required=False)
+parser.add_argument("--ensemble_agreement", type=int,   default=3,              help="",                        required=False)
 args                = parser.parse_args()
 logging.basicConfig(filename=args.log_path, level=logging.INFO, format="%(asctime)s;%(levelname)s;%(message)s")
 
