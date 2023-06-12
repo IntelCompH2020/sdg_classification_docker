@@ -25,6 +25,8 @@ parser.add_argument("--BERT_thres_old",     type=float, default=0.95,           
 parser.add_argument("--BERT_ATT_thres_old", type=float, default=0.98,           help="",                        required=False)
 parser.add_argument("--KT_parallel_jobs",   type=int,   default=10,             help="",                        required=False)
 parser.add_argument("--ensemble_agreement", type=int,   default=3,              help="",                        required=False)
+parser.add_argument("--distilbert_path",    type=str,   default="distilbert-base-uncased",  help="",            required=False)
+parser.add_argument("--bert_path",          type=str,   default='bert-base-uncased',        help="",            required=False)
 args                = parser.parse_args()
 logging.basicConfig(filename=args.log_path, level=logging.INFO, format="%(asctime)s;%(levelname)s;%(message)s")
 
@@ -40,11 +42,13 @@ out_path            = args.out_path
 parallel_jobs       = args.KT_parallel_jobs
 delimeter           = args.delimeter
 ensemble_agreement  = args.ensemble_agreement
+distilbert_path     = args.distilbert_path
+bert_path           = args.bert_path
 
 ################################################################################################################
 
-distilbert_vectorizer   = Vectorizer(model_name="distilbert-base-uncased")
-bert_vectorizer         = Vectorizer(model_name='bert-base-uncased')
+distilbert_vectorizer   = Vectorizer(model_name=distilbert_path)
+bert_vectorizer         = Vectorizer(model_name=bert_path)
 
 ################################################################################################################
 
