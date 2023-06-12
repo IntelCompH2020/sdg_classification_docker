@@ -55,8 +55,8 @@ sudo docker run \
 -v /home/dpappas/output_data:/output_files \
 -i intelcomp_sdg \
 batch_classifier.py \
---distilbert_path=/app/distilbert-base-uncased.tgz \
---bert_path=/app/bert-base-uncased.tgz \
+--distilbert_path=/app/distilbert-base-uncased \
+--bert_path=/app/bert-base-uncased \
 --data_path=/input_files/test_input.txt \
 --out_path=/output_files/test_output.txt
 
