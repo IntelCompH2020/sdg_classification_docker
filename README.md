@@ -49,6 +49,7 @@ You have to mount the input directory and the output directory
 Example:
 
  ```
+
 sudo docker run \
 -v /home/dpappas/input_data:/input_files \
 -v /home/dpappas/output_data:/output_files \
