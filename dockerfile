@@ -22,9 +22,6 @@ WORKDIR /app
 COPY . /app
 RUN pip install -r requirements.txt
 
-RUN tar -zxf distilbert-base-uncased.tgz
-RUN tar -zxf bert-base-uncased.tgz
-
 ENTRYPOINT ["python3"]
 
 CMD ["batch_classifier.py", "--delimeter=|~|", "--data_path=resources/data/test_input.txt", "--out_path=resources/data/test_output.txt" ]
